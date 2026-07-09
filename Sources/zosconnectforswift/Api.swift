@@ -15,6 +15,9 @@
  **/
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 open class Api {
     let connection: ZosConnect

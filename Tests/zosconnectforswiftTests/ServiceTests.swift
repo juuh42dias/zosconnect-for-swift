@@ -9,7 +9,12 @@ final class ServiceTests: XCTestCase {
     func testGetStatus() {
         let expectation = self.expectation(description: "getStatus")
         zosConnect.getService("dateTimeService") { result in
-            result.result!.getStatus { result in
+            guard let service = result.result else {
+                XCTFail("Service not available (integration test requires mock server)")
+                expectation.fulfill()
+                return
+            }
+            service.getStatus { result in
                 XCTAssertEqual(result.result, .STARTED)
                 expectation.fulfill()
             }
@@ -20,7 +25,12 @@ final class ServiceTests: XCTestCase {
     func testStart() {
         let expectation = self.expectation(description: "start")
         zosConnect.getService("dateTimeService") { result in
-            result.result!.start { result in
+            guard let service = result.result else {
+                XCTFail("Service not available (integration test requires mock server)")
+                expectation.fulfill()
+                return
+            }
+            service.start { result in
                 XCTAssertEqual(result.result, .STARTED)
                 expectation.fulfill()
             }
@@ -31,7 +41,12 @@ final class ServiceTests: XCTestCase {
     func testStop() {
         let expectation = self.expectation(description: "stop")
         zosConnect.getService("dateTimeService") { result in
-            result.result!.stop { result in
+            guard let service = result.result else {
+                XCTFail("Service not available (integration test requires mock server)")
+                expectation.fulfill()
+                return
+            }
+            service.stop { result in
                 XCTAssertEqual(result.result, .STOPPED)
                 expectation.fulfill()
             }
@@ -42,7 +57,12 @@ final class ServiceTests: XCTestCase {
     func testGetRequestSchema() {
         let expectation = self.expectation(description: "getRequestSchema")
         zosConnect.getService("dateTimeService") { result in
-            result.result!.getRequestSchema { result in
+            guard let service = result.result else {
+                XCTFail("Service not available (integration test requires mock server)")
+                expectation.fulfill()
+                return
+            }
+            service.getRequestSchema { result in
                 XCTAssertNotNil(result.result)
                 expectation.fulfill()
             }
@@ -53,7 +73,12 @@ final class ServiceTests: XCTestCase {
     func testGetResponseSchema() {
         let expectation = self.expectation(description: "getResponseSchema")
         zosConnect.getService("dateTimeService") { result in
-            result.result!.getResponseSchema { result in
+            guard let service = result.result else {
+                XCTFail("Service not available (integration test requires mock server)")
+                expectation.fulfill()
+                return
+            }
+            service.getResponseSchema { result in
                 XCTAssertNotNil(result.result)
                 expectation.fulfill()
             }
@@ -64,7 +89,12 @@ final class ServiceTests: XCTestCase {
     func testInvoke() {
         let expectation = self.expectation(description: "invoke")
         zosConnect.getService("dateTimeService") { result in
-            result.result!.invoke(nil) { result in
+            guard let service = result.result else {
+                XCTFail("Service not available (integration test requires mock server)")
+                expectation.fulfill()
+                return
+            }
+            service.invoke(nil) { result in
                 XCTAssertEqual(result.statusCode, 200)
                 XCTAssertNotNil(result.result)
                 expectation.fulfill()
