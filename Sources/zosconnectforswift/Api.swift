@@ -36,7 +36,8 @@ open class Api {
     }
 
     public func invoke(_ verb: String, resource: String, data: Data?, callback: @escaping DataCallback) {
-        guard let url = URL(string: resource, relativeTo: baseURL) else {
+        let normalizedResource = resource.hasPrefix("/") ? resource : "/\(resource)"
+        guard let url = URL(string: normalizedResource, relativeTo: baseURL) else {
             let r = ZosConnectResult<Data>()
             r.error = ZosConnectErrors.connectionerror(NSError(domain: "Invalid URL", code: -1))
             callback(r)
@@ -69,7 +70,9 @@ open class Api {
     public func getApiDoc(_ documentationType: String, callback: @escaping DataCallback) {
         guard let docUri = documentation[documentationType] as? String,
               let url = URL(string: docUri) else {
-            callback(ZosConnectResult<Data>())
+            let r = ZosConnectResult<Data>()
+            r.error = ZosConnectErrors.connectionerror(NSError(domain: "Documentation type not found: \(documentationType)", code: -1))
+            callback(r)
             return
         }
         var request = URLRequest(url: url)

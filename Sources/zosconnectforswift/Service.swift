@@ -41,7 +41,12 @@ open class Service {
             return
         }
         components.queryItems = [URLQueryItem(name: "action", value: "invoke")]
-        guard let url = components.url else { return }
+        guard let url = components.url else {
+            let r = ZosConnectResult<Data>()
+            r.error = ZosConnectErrors.connectionerror(NSError(domain: "Invalid URL components", code: -1))
+            callback(r)
+            return
+        }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
