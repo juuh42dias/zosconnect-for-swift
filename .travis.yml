@@ -1,6 +1,4 @@
-language: objective-c
-osx_image: xcode8.2
-env:
-  - TOOLCHAINS=swift
+language: swift
+osx_image: xcode13.1
 script:
   - swift test
